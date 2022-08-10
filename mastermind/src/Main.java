@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -53,17 +54,27 @@ public class Main {
         return userColorCode;
     }
 
-    private static void promptUserColorCodeInput() {
-        //TODO: Prompt Color Code from User
-    }
-
     private static void checkUserInputAgainstColorCode() {
         //TODO: Check User Input against Color Code
+
     }
 
-    private static int checkIfColorMatches() {
+    private static int checkIfColorMatches(/*int[] masterCode, int[] tryCode*/) {
+        int[] tryCode = {1, 2, 3 ,4};
+        int[] masterCode = {1, 2, 2, 6};
         //TODO: Check if a color matches
-        return 0;
+        int matches = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (tryCode[i] == masterCode[j]){
+                    if (){
+                        matches++;
+                    }
+                }
+            }
+        }
+        System.out.println(matches);
+        return matches;
     }
 
     private static int checkIfPositionMatches() {
