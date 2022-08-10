@@ -69,54 +69,6 @@ public class Main {
         } while (exitParam != 'n');
     }
 
-    private static int testMatch() {
-        //TODO: Check if a color matches
-        ArrayList<Integer> matches = new ArrayList<>();
-
-        int[] masCode3  = {1,2,3,1};
-        int[] userTry3  = {1,2,1,2};
-
-        int[] masCode1 = {1,1,2,2};
-        int[] userTry1 = {2,2,1,1};
-
-        // 1 = Blue | 2 = Red | 3 = Green | 4 = Yellow | 5 = White | 6 = Black
-        int[] masCode = {3,2,3,2}; // {0,2,3,3} // {0,0,3,3}
-        int[] userTry = {1,3,2,3}; // {0,1,2,2} // {0,1,0,2}
-
-
-
-        int posMatch = 0;
-        int colMatch = 0;
-
-        for (int i = 0; i < 4; i++) {
-            if (masCode[i] == userTry[i]) {
-                posMatch++;
-                masCode[i] = 0;
-                userTry[i] = 0;
-            }
-        }
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                if (masCode[i] == userTry[j] && masCode[i] != 0) {
-                    colMatch++;
-                    masCode[i] = 0;
-                    userTry[j] = 0;
-                    break;
-                }
-            }
-        }
-
-
-        System.out.println("Resultate:");
-        System.out.println("PosMatch: " + posMatch);
-        System.out.println("ColMatch: " + colMatch);
-
-
-
-        return 1;
-    }
-
     private static int startMenu() {
         //TODO: Start Menu
         //TODO: Ask User to select game mode ( User vs. User || User vs. Comp.)
