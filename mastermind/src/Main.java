@@ -1,5 +1,6 @@
 import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
@@ -39,22 +40,24 @@ public class Main {
                     break;
             }
 
-            System.out.println("The Color has been set! Your Turn!");
+            System.out.println("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n");
+            System.out.println("The Color has been set!");
+            System.out.println("Now it is your Turn! Enter your Code!\r\n");
 
             for (attempts = 0; attempts < 12; attempts++) {
 
                 //Print old attempts
                 if (attempts > 0) {
                     System.out.println("Your old attempts!");
-                    for (int[] attempt : colorCodes) {
-                        System.out.println(attempt.toString());
+                    for (int[] colorCode : colorCodes) {
+                        System.out.println(Arrays.toString(colorCode));
                     }
                 }
 
                 //Get new attempt
                 colorCodes.add(promptUserColorCode());
 
-                checkUserInputAgainstColorCode();
+                checkUserInputAgainstColorCode(masterCode, colorCodes.get(colorCodes.size() - 1));
 
             }
 
@@ -89,39 +92,20 @@ public class Main {
         return userInput;
     }
 
-    private static int[] promptUserColorCode() {
-        //TODO: Prompt user to state custom color code
-        int[] userColorCode = new int[4];
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("1 = Blue | 2 = Red | 3 = Green | 4 = Yellow | 5 = White | 6 = Black");
-        for (int i = 0; i < 4; i++) {
-            System.out.print("Insert your " + (i + 1) + ". color: ");
-            userColorCode[i] = scanner.nextInt();
-            System.out.println();
-        }
-        return userColorCode;
-    }
-
-    private static int[] generateColorCode() {
-        //TODO: Generate random Color Code
-        int[] userColorCode = {0, 0, 0, 0};
-        for (int i = 0; i < 4; i++) {
-            userColorCode[i] = 1 + (int) (Math.random() * ((6 - 1) + 1));
-        }
-        return userColorCode;
-    }
-
-    private static void checkUserInputAgainstColorCode() {
+    private static void checkUserInputAgainstColorCode(int[] mastercode, int[] userAttemptCode) {
         //TODO: Check User Input against Color Code
+        int positionMatches = checkIfPositionMatches(mastercode, userAttemptCode);
+        int colorMatches = checkIfColorMatches(mastercode, userAttemptCode);
 
-        if (checkIfPositionMatches() == 4) {
-            System.out.println("YOU WON");
+        if (positionMatches == 4) {
+            System.out.println("#########################################");
+            System.out.println("#           You are Megamind!           #");
+            System.out.println("#########################################\r\n");
         } else {
-            System.out.println("Correct Colors: " + checkIfColorMatches() + "\t Correct Positions: " + checkIfPositionMatches());
+            System.out.println("Correct Colors: " + colorMatches + "\t Correct Positions: " + positionMatches);
         }
 
     }
-
 
     private static int checkIfColorMatches(int[] masterCode, int[] userAttemptCode) {
         //TODO: Check if a color matches
@@ -151,4 +135,25 @@ public class Main {
         return matches;
     }
 
+    private static int[] promptUserColorCode() {
+        //TODO: Prompt user to state custom color code
+        int[] userColorCode = new int[4];
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("1 = Blue | 2 = Red | 3 = Green | 4 = Yellow | 5 = White | 6 = Black");
+        for (int i = 0; i < 4; i++) {
+            System.out.print("Insert your " + (i + 1) + ". color: ");
+            userColorCode[i] = scanner.nextInt();
+            System.out.println();
+        }
+        return userColorCode;
+    }
+
+    private static int[] generateColorCode() {
+        //TODO: Generate random Color Code
+        int[] userColorCode = {0, 0, 0, 0};
+        for (int i = 0; i < 4; i++) {
+            userColorCode[i] = 1 + (int) (Math.random() * ((6 - 1) + 1));
+        }
+        return userColorCode;
+    }
 }
