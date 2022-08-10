@@ -1,6 +1,8 @@
+import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
@@ -147,5 +149,23 @@ public class Main {
             userColorCode[i] = 1 + (int) (Math.random() * ((6 - 1) + 1));
         }
         return userColorCode;
+    }
+
+    private static int colorToCode(String colorName) {
+        switch (colorName) {
+            case "blue":
+                return 1;
+            case "red":
+                return 2;
+            case "green":
+                return 3;
+            case "yellow":
+                return 4;
+            case "white":
+                return 5;
+            case "black":
+                return 6;
+            return 0;
+        }
     }
 }
