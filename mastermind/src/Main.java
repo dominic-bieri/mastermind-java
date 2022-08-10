@@ -165,7 +165,8 @@ public class Main {
                 return 5;
             case "black":
                 return 6;
-            return 0;
+            default:
+                return 0;
         }
     }
 }
