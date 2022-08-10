@@ -18,7 +18,7 @@ public class Main {
          */
 
         ArrayList<int[]> colorCodes = new ArrayList<int[]>();
-        int[] masterCode = {1, 1, 1, 1};
+        int[] masterCode = new int[4];
 
 
         Scanner scn = new Scanner(System.in);
@@ -46,6 +46,7 @@ public class Main {
 
             for (attempts = 0; attempts < 12; attempts++) {
 
+                System.out.println("You have " + (12 - attempts) + " left!");
                 //Print old attempts
                 if (attempts > 0) {
                     System.out.println("Your old attempts!");
@@ -58,9 +59,22 @@ public class Main {
                 colorCodes.add(promptUserColorCode());
 
                 //Check against Master Code
-                checkUserInputAgainstMasterColorCode(masterCode, colorCodes.get(colorCodes.size() - 1));
+                int[] checkRes = checkColorCode(masterCode, colorCodes.get(colorCodes.size() - 1));
+
+                if (checkRes[0] == 4) {
+                    System.out.println("#########################################");
+                    System.out.println("#           You are Megamind!           #");
+                    System.out.println("#########################################\r\n");
+                    return;
+                } else {
+                    System.out.println("Correct Colors: " + checkRes[0] + "\t Correct Positions: " + checkRes[1]);
+                }
 
             }
+
+            System.out.println("#########################################");
+            System.out.println("#               You lost!               #");
+            System.out.println("#########################################\r\n");
 
             //Exit
             System.out.println("Play again? (y/n)");
@@ -72,8 +86,7 @@ public class Main {
     }
 
     private static int startMenu() {
-        //TODO: Start Menu
-        //TODO: Ask User to select game mode ( User vs. User || User vs. Comp.)
+
         Scanner scn = new Scanner(System.in);
         int userInput = 0;
 
@@ -93,17 +106,15 @@ public class Main {
         return userInput;
     }
 
-    private static void checkUserInputAgainstMasterColorCode(int[] masterCode, int[] userAttemptCode) {
-        //TODO: Check User Input against Color Code
+    private static int[] checkColorCode(int[] masterCode, int[] userAttemptCode) {
 
-        int[] tmpMasterCode = masterCode;
-        int[] tmpUserAttemptCode = userAttemptCode;
-        int posMatch = 0;
-        int colMatch = 0;
+        int[] tmpMasterCode = masterCode.clone();
+        int[] tmpUserAttemptCode = userAttemptCode.clone();
+        int[] codeRes = new int[2];
 
         for (int i = 0; i < 4; i++) {
             if (tmpMasterCode[i] == tmpUserAttemptCode[i]) {
-                posMatch++;
+                codeRes[0]++;
                 tmpMasterCode[i] = 0;
                 tmpUserAttemptCode[i] = 0;
             }
@@ -112,7 +123,7 @@ public class Main {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (tmpMasterCode[i] == tmpUserAttemptCode[j] && tmpMasterCode[i] != 0) {
-                    colMatch++;
+                    codeRes[1]++;
                     tmpMasterCode[i] = 0;
                     tmpUserAttemptCode[j] = 0;
                     break;
@@ -120,17 +131,10 @@ public class Main {
             }
         }
 
-        if (posMatch == 4) {
-            System.out.println("#########################################");
-            System.out.println("#           You are Megamind!           #");
-            System.out.println("#########################################\r\n");
-        } else {
-            System.out.println("Correct Colors: " + colMatch + "\t Correct Positions: " + posMatch);
-        }
+        return codeRes;
     }
 
     private static int[] promptUserColorCode() {
-        //TODO: Prompt user to state custom color code
         int[] userColorCode = new int[4];
         Scanner scanner = new Scanner(System.in);
         System.out.println("1 = Blue | 2 = Red | 3 = Green | 4 = Yellow | 5 = White | 6 = Black");
@@ -143,10 +147,9 @@ public class Main {
     }
 
     private static int[] generateColorCode() {
-        //TODO: Generate random Color Code
-        int[] userColorCode = {0, 0, 0, 0};
+        int[] userColorCode = new int[4];
         for (int i = 0; i < 4; i++) {
-            userColorCode[i] = 1 + (int) (Math.random() * ((6 - 1) + 1));
+            userColorCode[i] = (int) (Math.random() * 6 + 1);
         }
         return userColorCode;
     }
