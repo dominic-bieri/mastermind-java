@@ -17,7 +17,7 @@ public class Main {
          */
 
         ArrayList<int[]> colorCodes = new ArrayList<int[]>();
-        int[] masterCode = {1,1,1,1};
+        int[] masterCode = {1, 1, 1, 1};
 
 
         Scanner scn = new Scanner(System.in);
@@ -41,12 +41,12 @@ public class Main {
 
             System.out.println("The Color has been set! Your Turn!");
 
-            for ( attempts = 0; attempts < 12; attempts++) {
+            for (attempts = 0; attempts < 12; attempts++) {
 
                 //Print old attempts
-                if (attempts > 0){
+                if (attempts > 0) {
                     System.out.println("Your old attempts!");
-                    for (int[] attempt: colorCodes) {
+                    for (int[] attempt : colorCodes) {
                         System.out.println(attempt.toString());
                     }
                 }
@@ -57,7 +57,6 @@ public class Main {
                 checkUserInputAgainstColorCode();
 
             }
-
 
             //Exit
             System.out.println("Play again? (y/n)");
@@ -84,7 +83,8 @@ public class Main {
         System.out.print("Choose Mode: ");
         try {
             userInput = scn.nextInt();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         return userInput;
     }
@@ -114,26 +114,23 @@ public class Main {
     private static void checkUserInputAgainstColorCode() {
         //TODO: Check User Input against Color Code
 
-        if (checkIfPositionMatches() == 4){
+        if (checkIfPositionMatches() == 4) {
             System.out.println("YOU WON");
-        }
-        else{
+        } else {
             System.out.println("Correct Colors: " + checkIfColorMatches() + "\t Correct Positions: " + checkIfPositionMatches());
         }
 
     }
 
 
-    private static int checkIfColorMatches(/*int[] masterCode, int[] userAttemptCode*/) {
-        int[] userAttemptCode = {1, 2, 3 ,4};
-        int[] masterCode = {1, 1, 2, 6};
+    private static int checkIfColorMatches(int[] masterCode, int[] userAttemptCode) {
         //TODO: Check if a color matches
         ArrayList<Integer> matches = new ArrayList<>();
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                if (userAttemptCode[j] == masterCode[i]){
-                    if (!matches.contains(userAttemptCode[j])){
+                if (userAttemptCode[j] == masterCode[i]) {
+                    if (!matches.contains(userAttemptCode[j])) {
                         matches.add(userAttemptCode[j]);
                     }
                 }
@@ -142,14 +139,12 @@ public class Main {
         return matches.size();
     }
 
-    private static int checkIfPositionMatches(/*int[] masterCode, int[] userAttemptCode*/) {
+    private static int checkIfPositionMatches(int[] masterCode, int[] userAttemptCode) {
         //TODO: Check if a position matches
-        int[] masterCode = {1, 2 , 3 , 4};
-        int[] userAttemptCode = {1, 1, 4, 3};
 
         int matches = 0;
         for (int i = 0; i < 4; i++) {
-            if (userAttemptCode[i] == masterCode[i]){
+            if (userAttemptCode[i] == masterCode[i]) {
                 matches++;
             }
         }
