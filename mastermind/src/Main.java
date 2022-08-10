@@ -1,8 +1,6 @@
-import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
@@ -57,7 +55,8 @@ public class Main {
                 //Get new attempt
                 colorCodes.add(promptUserColorCode());
 
-                checkUserInputAgainstColorCode(masterCode, colorCodes.get(colorCodes.size() - 1));
+                //Check against Master Code
+                checkUserInputAgainstMasterColorCode(masterCode, colorCodes.get(colorCodes.size() - 1));
 
             }
 
@@ -68,6 +67,54 @@ public class Main {
 
 
         } while (exitParam != 'n');
+    }
+
+    private static int testMatch() {
+        //TODO: Check if a color matches
+        ArrayList<Integer> matches = new ArrayList<>();
+
+        int[] masCode3  = {1,2,3,1};
+        int[] userTry3  = {1,2,1,2};
+
+        int[] masCode1 = {1,1,2,2};
+        int[] userTry1 = {2,2,1,1};
+
+        // 1 = Blue | 2 = Red | 3 = Green | 4 = Yellow | 5 = White | 6 = Black
+        int[] masCode = {3,2,3,2}; // {0,2,3,3} // {0,0,3,3}
+        int[] userTry = {1,3,2,3}; // {0,1,2,2} // {0,1,0,2}
+
+
+
+        int posMatch = 0;
+        int colMatch = 0;
+
+        for (int i = 0; i < 4; i++) {
+            if (masCode[i] == userTry[i]) {
+                posMatch++;
+                masCode[i] = 0;
+                userTry[i] = 0;
+            }
+        }
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (masCode[i] == userTry[j] && masCode[i] != 0) {
+                    colMatch++;
+                    masCode[i] = 0;
+                    userTry[j] = 0;
+                    break;
+                }
+            }
+        }
+
+
+        System.out.println("Resultate:");
+        System.out.println("PosMatch: " + posMatch);
+        System.out.println("ColMatch: " + colMatch);
+
+
+
+        return 1;
     }
 
     private static int startMenu() {
@@ -92,47 +139,40 @@ public class Main {
         return userInput;
     }
 
-    private static void checkUserInputAgainstColorCode(int[] mastercode, int[] userAttemptCode) {
+    private static void checkUserInputAgainstMasterColorCode(int[] masterCode, int[] userAttemptCode) {
         //TODO: Check User Input against Color Code
-        int positionMatches = checkIfPositionMatches(mastercode, userAttemptCode);
-        int colorMatches = checkIfColorMatches(mastercode, userAttemptCode);
 
-        if (positionMatches == 4) {
+        int[] tmpMasterCode = masterCode;
+        int[] tmpUserAttemptCode = userAttemptCode;
+        int posMatch = 0;
+        int colMatch = 0;
+
+        for (int i = 0; i < 4; i++) {
+            if (tmpMasterCode[i] == tmpUserAttemptCode[i]) {
+                posMatch++;
+                tmpMasterCode[i] = 0;
+                tmpUserAttemptCode[i] = 0;
+            }
+        }
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (tmpMasterCode[i] == tmpUserAttemptCode[j] && tmpMasterCode[i] != 0) {
+                    colMatch++;
+                    tmpMasterCode[i] = 0;
+                    tmpUserAttemptCode[j] = 0;
+                    break;
+                }
+            }
+        }
+
+        if (posMatch == 4) {
             System.out.println("#########################################");
             System.out.println("#           You are Megamind!           #");
             System.out.println("#########################################\r\n");
         } else {
-            System.out.println("Correct Colors: " + colorMatches + "\t Correct Positions: " + positionMatches);
+            System.out.println("Correct Colors: " + colMatch + "\t Correct Positions: " + posMatch);
         }
-
-    }
-
-    private static int checkIfColorMatches(int[] masterCode, int[] userAttemptCode) {
-        //TODO: Check if a color matches
-        ArrayList<Integer> matches = new ArrayList<>();
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                if (userAttemptCode[j] == masterCode[i]) {
-                    if (!matches.contains(userAttemptCode[j])) {
-                        matches.add(userAttemptCode[j]);
-                    }
-                }
-            }
-        }
-        return matches.size();
-    }
-
-    private static int checkIfPositionMatches(int[] masterCode, int[] userAttemptCode) {
-        //TODO: Check if a position matches
-
-        int matches = 0;
-        for (int i = 0; i < 4; i++) {
-            if (userAttemptCode[i] == masterCode[i]) {
-                matches++;
-            }
-        }
-        return matches;
     }
 
     private static int[] promptUserColorCode() {
