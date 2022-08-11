@@ -39,13 +39,22 @@ public class Main {
             System.out.println("The master color code has been set!");
             System.out.println("Now it is your Turn! Enter your Code!\r\n");
 
-            for (attempt = 0; attempt < 12; attempt++) {
-
-                System.out.println("You have " + (12 - attempt) + " left!");
+            for (attempts = 0; attempts < 12; attempts++) {
+                if ((12 - attempts) != 1){
+                    System.out.println("You have " + (12 - attempts) + " Attempts left!");
+                }
+                else {
+                    System.out.println("You have 1 Attempt left!");
+                }
                 //Print old attempts
-                if (attempt > 0) {
-                    System.out.println("Your old attempt!");
-                    for (int[] colorCode : colorCodeAttempts) {
+                if (attempts > 0) {
+                    if (attempts != 1){
+                        System.out.println("Your old attempts!");
+                    }
+                    else {
+                        System.out.println("Your old attempt!");
+                    }
+                    for (int[] colorCode : colorCodes) {
                         System.out.println(Arrays.toString(colorCode));
                     }
                 }
