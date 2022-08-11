@@ -45,11 +45,20 @@ public class Main {
             System.out.println("Now it is your Turn! Enter your Code!\r\n");
 
             for (attempts = 0; attempts < 12; attempts++) {
-
-                System.out.println("You have " + (12 - attempts) + " left!");
+                if ((12 - attempts) != 1){
+                    System.out.println("You have " + (12 - attempts) + " Attempts left!");
+                }
+                else {
+                    System.out.println("You have 1 Attempt left!");
+                }
                 //Print old attempts
                 if (attempts > 0) {
-                    System.out.println("Your old attempts!");
+                    if (attempts != 1){
+                        System.out.println("Your old attempts!");
+                    }
+                    else {
+                        System.out.println("Your old attempt!");
+                    }
                     for (int[] colorCode : colorCodes) {
                         System.out.println(Arrays.toString(colorCode));
                     }
