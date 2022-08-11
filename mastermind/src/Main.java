@@ -1,4 +1,5 @@
 import javax.sound.midi.Soundbank;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -16,58 +17,56 @@ public class Main {
             white   = 5
             black   = 6
          */
+        Scanner scn = new Scanner(System.in);
 
-        ArrayList<int[]> colorCodes = new ArrayList<int[]>();
+        ArrayList<int[]> colorCodeAttempts = new ArrayList<int[]>();
         int[] masterCode = new int[4];
 
-
-        Scanner scn = new Scanner(System.in);
         char exitParam = 'y';
-        int attempts = 0;
+        int[] checkResult = new int[2];
+        int attempt = 0;
 
         do {
             int menuInput = startMenu();
 
             switch (menuInput) {
-                case 1:
-                    masterCode = promptUserColorCode();
-                    break;
-                case 2:
-                    masterCode = generateColorCode();
-                    break;
-                default:
-                    System.out.println("=> Error with menu option!");
-                    break;
+                case 1 -> promptUserColorCode(masterCode);
+                case 2 -> generateColorCode(masterCode);
+                default -> System.out.println("=> Error with menu option!");
             }
 
-            System.out.println("\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n");
-            System.out.println("The Color has been set!");
+            System.out.println("\r\n".repeat(12));
+            System.out.println("The master color code has been set!");
             System.out.println("Now it is your Turn! Enter your Code!\r\n");
 
-            for (attempts = 0; attempts < 12; attempts++) {
+            for (attempt = 0; attempt < 12; attempt++) {
 
-                System.out.println("You have " + (12 - attempts) + " left!");
+                System.out.println("You have " + (12 - attempt) + " left!");
                 //Print old attempts
-                if (attempts > 0) {
-                    System.out.println("Your old attempts!");
-                    for (int[] colorCode : colorCodes) {
+                if (attempt > 0) {
+                    System.out.println("Your old attempt!");
+                    for (int[] colorCode : colorCodeAttempts) {
                         System.out.println(Arrays.toString(colorCode));
                     }
                 }
 
                 //Get new attempt
-                colorCodes.add(promptUserColorCode());
+                colorCodeAttempts.add(new int[4]);
+                int errorCode = promptUserColorCode(colorCodeAttempts.get(colorCodeAttempts.size() - 1));
+
+                if (errorCode == -1)
+                    return;
 
                 //Check against Master Code
-                int[] checkRes = checkColorCode(masterCode, colorCodes.get(colorCodes.size() - 1));
+                checkColorCode(masterCode, colorCodeAttempts.get(colorCodeAttempts.size() - 1), checkResult);
 
-                if (checkRes[0] == 4) {
+                if (checkResult[0] == 4) {
                     System.out.println("#########################################");
                     System.out.println("#           You are Megamind!           #");
                     System.out.println("#########################################\r\n");
                     return;
                 } else {
-                    System.out.println("Correct Colors: " + checkRes[0] + "\t Correct Positions: " + checkRes[1]);
+                    System.out.println("Correct Positions: " + checkResult[0] + "\t Correct Colors: " + checkResult[1]);
                 }
 
             }
@@ -106,7 +105,7 @@ public class Main {
         return userInput;
     }
 
-    private static int[] checkColorCode(int[] masterCode, int[] userAttemptCode) {
+    private static int checkColorCode(int[] masterCode, int[] userAttemptCode, int[] checkResult) {
 
         int[] tmpMasterCode = masterCode.clone();
         int[] tmpUserAttemptCode = userAttemptCode.clone();
@@ -131,30 +130,46 @@ public class Main {
             }
         }
 
-        return codeRes;
+        return 0;
     }
 
-    private static int[] promptUserColorCode() {
-        int[] userColorCode = new int[4];
+    private static int promptUserColorCode(int[] userColorCode) {
+
         Scanner scanner = new Scanner(System.in);
+        int errorCode = 0;
+
         System.out.println("1 = Blue | 2 = Red | 3 = Green | 4 = Yellow | 5 = White | 6 = Black");
         for (int i = 0; i < 4; i++) {
             System.out.print("Insert your " + (i + 1) + ". color: ");
-            userColorCode[i] = scanner.nextInt();
-            System.out.println();
+            String usrInput = scanner.next();
+            int intUsrInput = 0;
+
+            try {
+                intUsrInput = Integer.parseInt(usrInput);
+            } catch (NumberFormatException e) {
+                intUsrInput = colorToCode(usrInput);
+            }
+
+            if (intUsrInput < 1 && intUsrInput > 6) {
+                errorCode = -1;
+                break;
+            }
+            userColorCode[i] = intUsrInput;
         }
-        return userColorCode;
+        return errorCode;
     }
 
-    private static int[] generateColorCode() {
-        int[] userColorCode = new int[4];
+    private static int generateColorCode(int[] genColorCode) {
         for (int i = 0; i < 4; i++) {
-            userColorCode[i] = (int) (Math.random() * 6 + 1);
+            genColorCode[i] = (int) (Math.random() * 6 + 1);
         }
-        return userColorCode;
+        return 0;
     }
 
     private static int colorToCode(String colorName) {
+
+        colorName = colorName.toLowerCase().trim();
+
         switch (colorName) {
             case "blue":
                 return 1;
